@@ -7,6 +7,9 @@ pt-BR:
         separator: ","
         delimiter: "."
         format: "%u %n"
+  errors:
+    messages:
+      blank: "não pode ficar em branco"
   date:
       month_names:
         - ~

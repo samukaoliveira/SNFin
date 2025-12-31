@@ -1,0 +1,17 @@
+<h1>Editar Cartão</h1>
+
+<%= form_with model: @cartao, local: true do |f| %>
+  <div>
+    <%= f.label :nome %>
+    <%= f.text_field :nome %>
+  </div>
+
+  <div>
+    <%= f.label :limite %>
+    <%= f.number_field :limite %>
+  </div>
+
+  <div>
+    <%= f.submit "Salvar" %>
+  </div>
+<% end %>
