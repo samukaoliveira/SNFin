@@ -3,13 +3,26 @@
     <%= content_for?(:title) ? yield(:title) : "Dashboard" %>
   </h1>
 
-  <div class="flex items-center gap-4">
-    <span class="text-gray-600">
-      <%= Date.today.strftime("%B / %Y") %>
+  <div class="flex items-center gap-3 col-12">
+    <!-- seta para trás -->
+    <%= link_to "←",
+        url_for(ano: @competencia_atual.anterior.ano,
+                mes: @competencia_atual.anterior.mes),
+        class: "text-xl px-2 hover:text-blue-600 col-3" %>
+
+    <!-- mês atual -->
+    <span class="text-gray-700 font-medium min-w-[140px] text-center col-6">
+      <%= @competencia_atual.titulo %>
     </span>
 
+    <!-- seta para frente -->
+    <%= link_to "→",
+        url_for(ano: @competencia_atual.proxima.ano,
+                mes: @competencia_atual.proxima.mes),
+        class: "text-xl px-2 hover:text-blue-600" %>
+
     <%= link_to "Novo lançamento",
-        lancamentos_new_path,
-        class: "bg-blue-600 text-white px-4 py-2 rounded" %>
+        new_lancamento_path,
+        class: "ml-4 bg-blue-600 text-white px-4 py-2 rounded" %>
   </div>
 </header>

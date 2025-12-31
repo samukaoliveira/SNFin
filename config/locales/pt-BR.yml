@@ -1,0 +1,25 @@
+pt-BR:
+  number:
+    currency:
+      format:
+        unit: "R$"
+        precision: 2
+        separator: ","
+        delimiter: "."
+        format: "%u %n"
+  date:
+      month_names:
+        - ~
+        - Janeiro
+        - Fevereiro
+        - Março
+        - Abril
+        - Maio
+        - Junho
+        - Julho
+        - Agosto
+        - Setembro
+        - Outubro
+        - Novembro
+        - Dezembro
+    

@@ -6,6 +6,7 @@
       <tr>
         <th class="p-3 text-left">Data</th>
         <th class="p-3 text-left">Descrição</th>
+        <th class="p-3 text-left">Natureza</th>
         <th class="p-3 text-right">Valor</th>
       </tr>
     </thead>
@@ -15,7 +16,10 @@
         <tr class="border-b hover:bg-gray-50">
           <td class="p-3"><%= l.data.strftime("%d/%m") %></td>
           <td class="p-3">
-            <%= l.tipo.capitalize %>
+            <%= l.descricao.capitalize %>
+          </td>
+          <td class="p-3">
+            <%= l.natureza.capitalize %>
             <% if l.fatura %>
               <span class="text-xs text-gray-400">
                 • <%= l.fatura.cartao.nome %>

@@ -1,2 +1,68 @@
-<h1>Lancamentos#new</h1>
-<p>Find me in app/views/lancamentos/new.html.erb</p>
+<div class="max-w-2xl mx-auto">
+  <h1 class="text-2xl font-semibold mb-6">
+    Novo Lançamento
+  </h1>
+
+  <%= form_with model: @lancamento, local: true do |f| %>
+
+    <% if @lancamento.errors.any? %>
+      <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded">
+        <ul class="text-red-600 text-sm">
+          <% @lancamento.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <!-- Data -->
+    <div class="mb-4">
+      <%= f.label :descricao, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :descricao,
+            class: "mt-1 block w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :data, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.date_field :data,
+            class: "mt-1 block w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+
+    <!-- Natureza -->
+    <div class="mb-4">
+      <%= f.label :natureza, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.select :natureza,
+            Lancamento.naturezas.keys.map { |k| [k.humanize, k] },
+            { prompt: "Selecione" },
+            class: "mt-1 block w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+
+    <!-- Valor -->
+    <div class="mb-4">
+      <%= f.label :valor, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.number_field :valor,
+            step: 0.01,
+            class: "mt-1 block w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+
+    <!-- Frequência -->
+    <div class="mb-6">
+      <%= f.label :frequencia, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.select :frequencia,
+            Lancamento.frequencia.keys.map { |k| [k.humanize, k] },
+            {},
+            class: "mt-1 block w-full rounded border-gray-300 shadow-sm" %>
+    </div>
+
+    <!-- Ações -->
+    <div class="flex gap-3">
+      <%= f.submit "Salvar",
+            class: "px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+
+      <%= link_to "Cancelar",
+            lancamentos_path,
+            class: "text-gray-600 hover:underline" %>
+    </div>
+
+  <% end %>
+</div>

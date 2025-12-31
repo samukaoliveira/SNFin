@@ -2,7 +2,7 @@ class LancamentosController < ApplicationController
   before_action :set_lancamento, only: [:edit, :update, :destroy]
 
   def index
-    @lancamentos = TrataNulos.trata_array(Lancamento.all)
+    @lancamentos = TrataNulos.trata_array(@competencia_atual.lancamentos.order(:data))
   end
 
   def new
@@ -42,6 +42,6 @@ class LancamentosController < ApplicationController
   end
 
   def lancamento_params
-    params.require(:lancamento).permit(:data, :natureza, :valor, :descricao)
+    params.require(:lancamento).permit(:data, :natureza, :frequencia, :valor, :descricao)
   end
 end
