@@ -14,6 +14,7 @@ class Lancamento < ApplicationRecord
             if: :repetido?
 
   before_validation :atribuir_competencia
+  after_create :gerar_lancamentos_fixos
 
   private
 
@@ -22,4 +23,8 @@ class Lancamento < ApplicationRecord
 
     self.competencia = Competencia.por_data(data)
   end
+
+  def gerar_lancamentos_fixos
+  LancamentoService.new(self).call
+end
 end
