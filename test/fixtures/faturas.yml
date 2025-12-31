@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cartao: one
+  mes: 1
+  ano: 1
+
+two:
+  cartao: two
+  mes: 1
+  ano: 1

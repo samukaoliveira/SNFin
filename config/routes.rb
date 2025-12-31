@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  get "competencias/index"
+  get "competencias/show"
+  get "cartaos/index"
+  get "cartaos/show"
+  get "cartaos/new"
+  get "cartaos/create"
+  get "lancamentos/index"
+  get "lancamentos/new"
+  get "lancamentos/create"
+  get "lancamentos/edit"
+  get "lancamentos/update"
+  get "lancamentos/destroy"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
