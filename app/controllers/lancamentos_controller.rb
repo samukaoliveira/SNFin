@@ -35,6 +35,17 @@ class LancamentosController < ApplicationController
     redirect_to lancamentos_path, notice: "Lançamento removido com sucesso."
   end
 
+  def importar_xls
+    service = LancamentoImportService.new(params[:file])
+    service.call
+
+    if service.erros.empty?
+      redirect_to lancamentos_path, notice: "Importação concluída com sucesso!"
+    else
+      redirect_to importar_lancamentos_path, alert: "Erros: #{service.erros.join(', ')}"
+    end
+  end
+
   private
 
   def set_lancamento

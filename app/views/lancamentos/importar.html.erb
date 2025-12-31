@@ -1,0 +1,11 @@
+<h1>Importar XLS do Organizze</h1>
+
+<%= form_with url: importar_xls_lancamentos_path, local: true, multipart: true do |f| %>
+  <div>
+    <%= f.label :file, "Escolha o arquivo XLS/XLSX" %>
+    <%= f.file_field :file, accept: ".xls,.xlsx" %>
+  </div>
+  <div>
+    <%= f.submit "Importar", class: "bg-blue-600 text-white px-4 py-2 rounded" %>
+  </div>
+<% end %>
