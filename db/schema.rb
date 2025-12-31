@@ -36,15 +36,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_171650) do
 
   create_table "lancamentos", force: :cascade do |t|
     t.date "data"
-    t.integer "tipo"
+    t.integer "natureza"
     t.decimal "valor", precision: 15, scale: 2
     t.integer "frequencia"
     t.integer "quantidade"
     t.integer "fatura_id"
-    t.integer "competencia_id"
+    t.integer "competencia_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "natureza"
     t.string "descricao"
     t.index ["competencia_id"], name: "index_lancamentos_on_competencia_id"
     t.index ["fatura_id"], name: "index_lancamentos_on_fatura_id"

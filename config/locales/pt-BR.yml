@@ -10,6 +10,17 @@ pt-BR:
   errors:
     messages:
       blank: "não pode ficar em branco"
+  models:
+      lancamento:
+        attributes:
+          descricao: "Descrição"
+          data: "Data"
+          valor: "Valor"
+          frequencia: "Frequência"
+          natureza: "Natureza"
+      cartao:
+        attributes:
+          nome: "Nome"
   date:
       month_names:
         - ~

@@ -6,12 +6,16 @@ class Lancamento < ApplicationRecord
   enum :frequencia, { unico: 0, fixo: 1, repetido: 2 }
 
   validates :descricao, :data, :natureza, :valor, :frequencia, presence: true
-  validates :valor, numericality: { greater_than: 0 }
+  validates :valor, numericality: { greater_than_or_equal_to: 0 }
 
   validates :quantidade,
             presence: true,
             numericality: { greater_than: 1 },
             if: :repetido?
+
+              # Evita lançamentos duplicados
+  validates :descricao, uniqueness: { scope: [:data, :valor, :natureza],
+    message: "já existe um lançamento com a mesma descrição, data, valor e natureza" }
 
   before_validation :atribuir_competencia
   after_create :gerar_lancamentos_fixos
