@@ -72,4 +72,68 @@ RSpec.describe Competencia, type: :model do
       expect(comp.nome).to eq("11/2025")
     end
   end
+
+  describe '#lancamentos_ate_competencia' do
+    it 'retorna apenas lançamentos até o fim da competência' do
+      comp = create(:competencia, ano: 2026, mes: 1)
+
+      dentro = create(:lancamento,
+        data: Date.new(2026, 1, 15),
+        valor: 100,
+        natureza: :receita
+      )
+
+      fora = create(:lancamento,
+        data: Date.new(2026, 2, 1),
+        valor: 999,
+        natureza: :receita
+      )
+
+      expect(comp.lancamentos_ate_competencia).to include(dentro)
+      expect(comp.lancamentos_ate_competencia).not_to include(fora)
+    end
+  end
+
+  describe '#data_fim' do
+    it 'retorna o último dia do mês da competência' do
+      comp = Competencia.new(ano: 2026, mes: 2)
+      expect(comp.data_fim).to eq(Date.new(2026, 2, 28))
+    end
+  end
+
+  describe 'totais da competência' do
+    it 'soma corretamente receitas e despesas' do
+      comp = create(:competencia, ano: 2026, mes: 1)
+
+      create(:lancamento, data: '2026-01-05', valor: 500, natureza: :receita)
+      create(:lancamento, data: '2026-01-10', valor: 200, natureza: :despesa)
+      create(:lancamento, data: '2026-02-01', valor: 999, natureza: :receita)
+
+      expect(comp.total_receitas).to eq(500)
+      expect(comp.total_despesas).to eq(200)
+    end
+  end
+
+  describe '#saldo' do
+    it 'retorna receitas menos despesas' do
+      comp = create(:competencia, ano: 2026, mes: 1)
+
+      create(:lancamento, data: '2026-01-05', valor: 1000, natureza: :receita)
+      create(:lancamento, data: '2026-01-06', valor: 400, natureza: :despesa)
+
+      expect(comp.saldo).to eq(600)
+    end
+  end
+
+  describe '#saldo_total' do
+    it 'ignora lançamentos futuros no saldo total' do
+      comp = create(:competencia, ano: 2026, mes: 1)
+
+      create(:lancamento, data: '2026-01-01', valor: 300, natureza: :receita)
+      create(:lancamento, data: '2026-01-20', valor: 100, natureza: :despesa)
+      create(:lancamento, data: '2026-02-01', valor: 999, natureza: :receita)
+
+      expect(comp.saldo_total).to eq(200)
+    end
+  end
 end

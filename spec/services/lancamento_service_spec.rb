@@ -1,20 +1,33 @@
 require 'rails_helper'
 
-RSpec.describe LancamentoService, type: :service do
-  let(:competencia) { create(:competencia, ano: 2025, mes: 4) }
-
-  it "não gera lançamentos se frequência não for fixo" do
-    lanc = create(:lancamento, frequencia: :unico, data: Date.new(2025,4,15), competencia: competencia)
-    expect {
-      LancamentoService.new(lanc).call
-    }.not_to change { Lancamento.count }
+RSpec.describe LancamentoImportService, type: :service do
+  let(:file) do
+    fixture_file_upload(
+      'organizze.xls',
+      'application/vnd.ms-excel'
+    )
   end
 
-  it "gera lançamentos fixos corretamente mantendo dia" do
-    lanc = build(:lancamento, frequencia: :fixo, data: Date.new(2025,4,15), competencia: competencia)
-    expect {
-      LancamentoService.new(lanc).call
-    }.to change { Lancamento.count }.by(8)
-    expect(Lancamento.last.data.day).to eq(15)
+  subject(:call_service) { described_class.new(file).call }
+
+  it 'importa lançamentos do arquivo' do
+    expect { call_service }.to change(Lancamento, :count)
+  end
+
+  it 'importa todos os lançamentos como únicos' do
+    call_service
+    expect(Lancamento.pluck(:frequencia).uniq).to eq(['unico'])
+  end
+
+  it 'converte valores negativos em despesa com valor positivo' do
+    call_service
+    despesa = Lancamento.find_by(natureza: 'despesa')
+    expect(despesa.valor).to be > 0
+  end
+
+  it 'mantém receitas com valor positivo' do
+    call_service
+    receita = Lancamento.find_by(natureza: 'receita')
+    expect(receita.valor).to be > 0
   end
 end

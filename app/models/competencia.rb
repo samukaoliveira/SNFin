@@ -32,4 +32,40 @@ class Competencia < ApplicationRecord
     def nome
       "#{mes.to_s.rjust(2, '0')}/#{ano}"
     end
+
+    def total_receitas
+        filtra_e_soma(lancamentos, :receita)
+    end
+
+    def total_despesas
+        filtra_e_soma(lancamentos, :despesa)
+    end
+
+    def saldo
+        total_receitas - total_despesas
+    end
+
+    def filtra_e_soma(valores, natureza)
+        valores.filter { |v| v.natureza.to_sym == natureza }.sum(&:valor)
+    end
+
+    def saldo_total
+        todas_as_receitas_cadastradas - todas_as_despesas_cadastradas
+    end
+
+    def todas_as_receitas_cadastradas
+        filtra_e_soma(lancamentos_ate_competencia, :receita)
+    end
+
+    def todas_as_despesas_cadastradas
+        filtra_e_soma(lancamentos_ate_competencia, :despesa)
+    end
+
+    def data_fim
+        Date.new(ano, mes, 1).end_of_month
+    end
+
+    def lancamentos_ate_competencia
+        Lancamento.where('data <= ?', data_fim)
+    end
 end
