@@ -1,0 +1,58 @@
+<% content_for :title, "Faturas - #{@cartao.nome}" %>
+
+<div class="bg-white rounded shadow divide-y">
+
+  <!-- Cabeçalho -->
+  <div class="p-4 flex items-center justify-between">
+    <div>
+      <h2 class="text-lg font-semibold">
+        <%= @cartao.nome %>
+      </h2>
+      <p class="text-sm text-gray-500">
+        Todas as faturas do cartão
+      </p>
+    </div>
+
+    <%= link_to "← Voltar", cartaos_path,
+          class: "text-sm text-gray-600 hover:text-black" %>
+  </div>
+
+  <!-- Lista de faturas -->
+  <table class="w-full text-sm">
+    <thead class="border-b bg-gray-50">
+      <tr>
+        <th class="p-3 text-left">Competência</th>
+        <th class="p-3 text-right">Total</th>
+        <th class="p-3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @faturas.each do |fatura| %>
+        <tr class="border-b hover:bg-gray-50">
+          <td class="p-3">
+            <%= "%02d/%d" % [fatura.mes, fatura.ano] %>
+          </td>
+
+          <td class="p-3 text-right font-medium text-red-600">
+            <%= number_to_currency(fatura.total) %>
+          </td>
+
+          <td class="p-3 text-right">
+            <%= link_to "Ver detalhes",
+                  cartao_fatura_path(@cartao, fatura),
+                  class: "text-blue-600 hover:underline text-sm" %>
+          </td>
+        </tr>
+      <% end %>
+
+      <% if @faturas.empty? %>
+        <tr>
+          <td colspan="3" class="p-6 text-center text-gray-400">
+            Nenhuma fatura encontrada
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

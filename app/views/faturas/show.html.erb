@@ -1,0 +1,75 @@
+<% content_for :title, "Fatura" %>
+
+<div class="space-y-6">
+
+  <!-- HEADER -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-semibold">
+        💳 <%= @fatura.cartao.nome %>
+      </h1>
+      <p class="text-sm text-gray-500">
+        Fatura de <%= "%02d/%d" % [@fatura.mes, @fatura.ano] %>
+      </p>
+    </div>
+
+    <div class="text-right">
+      <p class="text-xs text-gray-500 uppercase">Total da fatura</p>
+      <p class="text-xl font-bold text-red-600">
+        <%= number_to_currency(@fatura.lancamentos.sum(:valor)) %>
+      </p>
+    </div>
+  </div>
+
+  <!-- TABELA DE LANÇAMENTOS -->
+  <div class="bg-white rounded shadow">
+    <table class="w-full text-sm">
+      <thead class="border-b bg-gray-50">
+        <tr>
+          <th class="p-3 text-left w-20">Data</th>
+          <th class="p-3 text-left">Descrição</th>
+          <th class="p-3 text-right w-32">Valor</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @fatura.lancamentos.each do |l| %>
+          <tr class="border-b hover:bg-gray-50">
+            <td class="p-3">
+              <%= l.data.strftime("%d/%m") %>
+            </td>
+
+            <td class="p-3">
+              <%= l.descricao.capitalize %>
+            </td>
+
+            <td class="p-3 text-right font-medium text-red-600">
+              <%= number_to_currency(l.valor) %>
+            </td>
+          </tr>
+        <% end %>
+
+        <% if @fatura.lancamentos.empty? %>
+          <tr>
+            <td colspan="3" class="p-6 text-center text-gray-400">
+              Nenhum lançamento nesta fatura
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="flex gap-3">
+    <%= link_to "Novo lançamento - Cartão",
+      new_lancamento_path(fatura_id: @fatura.id),
+      class: "px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700" %>
+
+
+    <%= link_to "Voltar",
+      lancamentos_path,
+      class: "px-4 py-2 border rounded hover:bg-gray-50" %>
+  </div>
+
+</div>

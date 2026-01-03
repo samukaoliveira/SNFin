@@ -1,6 +1,7 @@
 class Lancamento < ApplicationRecord
   belongs_to :fatura, optional: true
   belongs_to :competencia
+  before_validation :atribuir_fatura_cartao
 
   enum :natureza, { receita: 0, despesa: 1 }
   enum :frequencia, { unico: 0, fixo: 1, repetido: 2 }
@@ -30,5 +31,21 @@ class Lancamento < ApplicationRecord
 
   def gerar_lancamentos_fixos
   LancamentoService.new(self).call
-end
+  end
+
+  def atribuir_fatura_cartao
+    fechamento = cartao.fechamento
+    data_lancamento = data.to_date
+
+    competencia_fatura =
+      if data_lancamento.day > fechamento
+        data_lancamento.next_month.beginning_of_month
+      else
+        data_lancamento.beginning_of_month
+      end
+
+    self.fatura = cartao.faturas.find_or_create_by!(
+      competencia: competencia_fatura
+    )
+  end
 end

@@ -12,5 +12,7 @@ class ApplicationController < ActionController::Base
     mes = params[:mes]&.to_i || Date.current.month
 
     @competencia_atual = Competencia.find_or_create_by!(ano: ano, mes: mes)
+
+    @faturas = @competencia_atual.faturas
   end
 end

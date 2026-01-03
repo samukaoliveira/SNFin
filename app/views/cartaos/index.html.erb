@@ -20,6 +20,7 @@
         <td class="p-2">R$ <%= number_to_currency(cartao.limite, unit: "") %></td>
         <td class="p-2 text-right">
           <%= link_to "Ver", cartao_path(cartao), class: "text-blue-600" %> |
+          <%= link_to "Faturas", cartao_faturas_path(cartao), class: "text-blue-600" %> |
           <%= link_to "Editar", edit_cartao_path(cartao), class: "text-yellow-600" %> |
           <%= link_to "Excluir", cartao_path(cartao),
                 method: :delete,

@@ -68,4 +68,14 @@ class Competencia < ApplicationRecord
     def lancamentos_ate_competencia
         Lancamento.where('data <= ?', data_fim)
     end
+
+    def faturas
+        Cartao.all.map do |cartao|
+        Fatura.find_or_create_by!(
+            cartao: cartao,
+            mes: mes,
+            ano: ano
+        )
+        end
+    end
 end

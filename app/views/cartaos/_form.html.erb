@@ -1,8 +1,7 @@
 <%= form_with(model: cartao, local: true) do |f| %>
   <% if cartao.errors.any? %>
-    <div class="mb-4 text-red-600">
-      <h3>Erros:</h3>
-      <ul>
+    <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded">
+      <ul class="text-red-600 text-sm">
         <% cartao.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
@@ -10,18 +9,54 @@
     </div>
   <% end %>
 
+  <!-- Nome -->
   <div class="mb-4">
-    <%= f.label :nome, class: "block font-semibold" %>
-    <%= f.text_field :nome, class: "w-full border rounded px-3 py-2" %>
+    <%= f.label :nome, "Nome do cartão", class: "block font-semibold" %>
+    <%= f.text_field :nome,
+          class: "w-full border rounded px-3 py-2" %>
   </div>
 
+  <!-- Limite -->
   <div class="mb-4">
     <%= f.label :limite, class: "block font-semibold" %>
-    <%= f.number_field :limite, step: 0.01, class: "w-full border rounded px-3 py-2" %>
+    <%= f.number_field :limite,
+          step: 0.01,
+          class: "w-full border rounded px-3 py-2" %>
   </div>
 
+  <!-- Fechamento -->
+  <div class="mb-4">
+    <%= f.label :fechamento, "Dia de fechamento", class: "block font-semibold" %>
+    <%= f.select :fechamento,
+          (1..28).map { |d| [d, d] },
+          { prompt: "Selecione o dia" },
+          class: "w-full border rounded px-3 py-2" %>
+
+    <p class="text-xs text-gray-500 mt-1">
+      Compras após esse dia entram na próxima fatura
+    </p>
+  </div>
+
+  <!-- Vencimento -->
+  <div class="mb-6">
+    <%= f.label :vencimento, "Dia de vencimento", class: "block font-semibold" %>
+    <%= f.select :vencimento,
+          (1..28).map { |d| [d, d] },
+          { prompt: "Selecione o dia" },
+          class: "w-full border rounded px-3 py-2" %>
+
+    <p class="text-xs text-gray-500 mt-1">
+      Data limite para pagamento da fatura
+    </p>
+  </div>
+
+  <!-- Ações -->
   <div class="flex gap-2">
-    <%= f.submit class: "bg-blue-600 text-white px-4 py-2 rounded" %>
-    <%= link_to "Cancelar", cartaos_path, class: "px-4 py-2 border rounded" %>
+    <%= f.submit "Salvar",
+          class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+
+    <%= link_to "Cancelar",
+          cartaos_path,
+          class: "px-4 py-2 border rounded" %>
   </div>
 <% end %>

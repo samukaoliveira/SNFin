@@ -1,37 +1,79 @@
 <% content_for :title, "Lançamentos" %>
 
-<div class="bg-white rounded shadow">
+<div class="bg-white rounded shadow overflow-hidden">
   <table class="w-full text-sm">
-    <thead class="border-b">
+    <thead class="border-b bg-gray-50">
       <tr>
-        <th class="p-3 text-left">Data</th>
+        <th class="p-3 text-left w-20">Data</th>
         <th class="p-3 text-left">Descrição</th>
         <th class="p-3 text-left">Natureza</th>
-        <th class="p-3 text-right">Valor</th>
+        <th class="p-3 text-right w-32">Valor</th>
       </tr>
     </thead>
 
     <tbody>
+
+      <!-- ================= CARTÕES / FATURAS ================= -->
+      <% @faturas.each do |fatura| %>
+
+        
+          <div>
+            <tr class="border-b bg-gray-50 hover:bg-gray-100 cursor-pointer">
+              <td class="p-3">
+                <%= "%02d/%02d" % [fatura.mes, fatura.ano % 100] %>
+              </td>
+
+              <td class="p-3 font-medium">
+                💳 <%= fatura.cartao.nome %>
+              </td>
+
+              <td class="p-3 text-gray-500">
+                <%= link_to cartao_fatura_path(fatura.cartao, fatura),
+                  class: "inline-flex items-center px-3 py-1.5
+                          rounded-md bg-blue-600 text-white text-xs font-medium
+                          hover:bg-blue-700 transition" do %>
+                  Ver fatura
+                <% end %>
+
+              </td>
+
+              <td class="p-3 text-right font-semibold text-red-600">
+                <%= number_to_currency(fatura.lancamentos.sum(:valor)) %>
+              </td>
+            </tr>
+          </div>
+      <% end %>
+
+      <!-- ================= LANÇAMENTOS NORMAIS ================= -->
       <% @lancamentos.each do |l| %>
         <tr class="border-b hover:bg-gray-50">
-          <td class="p-3"><%= l.data.strftime("%d/%m") %></td>
+          <td class="p-3">
+            <%= l.data.strftime("%d/%m") %>
+          </td>
+
           <td class="p-3">
             <%= l.descricao.capitalize %>
           </td>
+
           <td class="p-3">
             <%= l.natureza.capitalize %>
-            <% if l.fatura %>
-              <span class="text-xs text-gray-400">
-                • <%= l.fatura.cartao.nome %>
-              </span>
-            <% end %>
           </td>
+
           <td class="p-3 text-right font-medium
             <%= l.despesa? ? 'text-red-600' : 'text-green-600' %>">
             <%= number_to_currency(l.valor) %>
           </td>
         </tr>
       <% end %>
+
+      <% if @faturas.empty? && @lancamentos.empty? %>
+        <tr>
+          <td colspan="4" class="p-6 text-center text-gray-400">
+            Nenhum lançamento nesta competência
+          </td>
+        </tr>
+      <% end %>
+
     </tbody>
   </table>
 </div>

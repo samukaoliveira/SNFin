@@ -3,4 +3,7 @@ class Fatura < ApplicationRecord
   has_many :lancamentos, dependent: :destroy
 
   validates :mes, :ano, presence: true
+
+  def total
+  end
 end

@@ -4,6 +4,14 @@
   <strong>Limite:</strong>
   R$ <%= number_to_currency(@cartao.limite, unit: "") %>
 </p>
+<p class="mb-4">
+  <strong>Fechamento:</strong>
+<%= @cartao.fechamento %>
+</p>
+<p class="mb-4">
+  <strong>Vencimento:</strong>
+ <%= @cartao.vencimento %>
+</p>
 
 <div class="flex gap-2">
   <%= link_to "Editar", edit_cartao_path(@cartao), class: "px-4 py-2 border rounded" %>

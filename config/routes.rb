@@ -8,5 +8,8 @@ Rails.application.routes.draw do
       post :importar_xls
     end
   end
-  resources :cartaos
+  resources :cartaos do
+    resources :faturas, only: [ :show ]
+    get "faturas", to: "cartaos#faturas"
+  end
 end

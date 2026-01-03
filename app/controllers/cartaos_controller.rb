@@ -1,11 +1,15 @@
 class CartaosController < ApplicationController
-  before_action :set_cartao, only: [:show, :edit, :update, :destroy]
+  before_action :set_cartao, only: [:show, :edit, :update, :destroy, :faturas]
 
   def index
     @cartaos = Cartao.all
   end
 
   def show
+  end
+
+  def faturas
+    @faturas = Fatura.where(cartao: @cartao)
   end
 
   def new
@@ -40,10 +44,10 @@ class CartaosController < ApplicationController
   private
 
   def set_cartao
-    @cartao = Cartao.find(params[:id])
+    @cartao = Cartao.find(params[:cartao_id] || params[:id])
   end
 
   def cartao_params
-    params.require(:cartao).permit(:nome, :limite)
+    params.require(:cartao).permit(:nome, :limite, :fechamento, :vencimento)
   end
 end
