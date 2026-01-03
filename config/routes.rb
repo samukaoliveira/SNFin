@@ -8,5 +8,7 @@ Rails.application.routes.draw do
       post :importar_xls
     end
   end
-  resources :cartaos
+  resources :cartaos do
+    resources :lancamentos, only: %i[new create]
+  end
 end

@@ -13,9 +13,10 @@ class Lancamento < ApplicationRecord
             numericality: { greater_than: 1 },
             if: :repetido?
 
-              # Evita lançamentos duplicados
-  validates :descricao, uniqueness: { scope: [:data, :valor, :natureza],
-    message: "já existe um lançamento com a mesma descrição, data, valor e natureza" }
+  validates :descricao, uniqueness: {
+    scope: [:data, :valor, :natureza],
+    message: "já existe um lançamento com a mesma descrição, data, valor e natureza"
+  }
 
   before_validation :atribuir_competencia
   after_create :gerar_lancamentos_fixos
@@ -24,11 +25,10 @@ class Lancamento < ApplicationRecord
 
   def atribuir_competencia
     return if data.blank?
-
-    self.competencia = Competencia.por_data(data)
+    self.competencia ||= Competencia.por_data(data)
   end
 
   def gerar_lancamentos_fixos
-  LancamentoService.new(self).call
-end
+    LancamentoService.new(self).call
+  end
 end
