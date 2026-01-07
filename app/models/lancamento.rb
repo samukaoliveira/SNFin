@@ -34,18 +34,24 @@ class Lancamento < ApplicationRecord
   end
 
   def atribuir_fatura_cartao
-    fechamento = cartao.fechamento
-    data_lancamento = data.to_date
+  return if data.blank?
 
-    competencia_fatura =
-      if data_lancamento.day > fechamento
-        data_lancamento.next_month.beginning_of_month
-      else
-        data_lancamento.beginning_of_month
-      end
+  cartao = fatura&.cartao
+  return unless cartao
 
-    self.fatura = cartao.faturas.find_or_create_by!(
-      competencia: competencia_fatura
+  fechamento = cartao.fechamento
+  data_lancamento = data.to_date
+
+  data_fatura =
+    if data_lancamento.day > fechamento
+      data_lancamento.next_month.beginning_of_month
+    else
+      data_lancamento.beginning_of_month
+    end
+
+  self.fatura = cartao.faturas.find_or_create_by!(
+    mes: data_fatura.month,
+    ano: data_fatura.year
     )
   end
 end
