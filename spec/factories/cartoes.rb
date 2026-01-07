@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :cartao do
-    nome { "Visa" }
-    limite { 1000.0 }
+    nome { "Cartão Teste" }
+    limite { 3000 }
+    fechamento { 10 }
+    vencimento { 20 }
   end
 end
