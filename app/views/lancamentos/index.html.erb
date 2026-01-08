@@ -8,6 +8,7 @@
         <th class="p-3 text-left">Descrição</th>
         <th class="p-3 text-left">Natureza</th>
         <th class="p-3 text-right w-32">Valor</th>
+        <th class="p-3 text-right w-10">Pago</th>
       </tr>
     </thead>
 
@@ -63,6 +64,15 @@
             <%= l.despesa? ? 'text-red-600' : 'text-green-600' %>">
             <%= number_to_currency(l.valor) %>
           </td>
+
+          <td class="p-1 text-center">
+            <input type="checkbox"
+                  <%= "checked" if l.pago %>
+                  data-url="<%= toggle_pago_lancamento_path(l) %>"
+                  data-csrf="<%= form_authenticity_token %>"
+                  class="js-pago">
+          </td>
+
         </tr>
       <% end %>
 

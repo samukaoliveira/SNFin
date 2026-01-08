@@ -1,5 +1,5 @@
 class LancamentosController < ApplicationController
-  before_action :set_lancamento, only: [:edit, :update, :destroy]
+  before_action :set_lancamento, only: [ :edit, :update, :destroy ]
 
   def index
     @lancamentos = TrataNulos.trata_array(
@@ -54,6 +54,11 @@ class LancamentosController < ApplicationController
                 notice: "Lançamento removido com sucesso."
   end
 
+  def toggle_pago
+    lancamento = Lancamento.find(params[:id])
+    lancamento.update!(pago: !lancamento.pago)
+  end
+
   def importar_xls
     service = LancamentoImportService.new(params[:file])
     service.call
@@ -81,7 +86,8 @@ class LancamentosController < ApplicationController
       :frequencia,
       :valor,
       :descricao,
-      :fatura_id
+      :fatura_id,
+      :pago
     )
   end
 

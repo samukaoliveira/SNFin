@@ -14,8 +14,8 @@ class Lancamento < ApplicationRecord
             numericality: { greater_than: 1 },
             if: :repetido?
 
-              # Evita lançamentos duplicados
-  validates :descricao, uniqueness: { scope: [:data, :valor, :natureza],
+  # Evita lançamentos duplicados
+  validates :descricao, uniqueness: { scope: [ :data, :valor, :natureza ],
     message: "já existe um lançamento com a mesma descrição, data, valor e natureza" }
 
   before_validation :atribuir_competencia
@@ -30,28 +30,28 @@ class Lancamento < ApplicationRecord
   end
 
   def gerar_lancamentos_fixos
-  LancamentoService.new(self).call
+    LancamentoService.new(self).call
   end
 
   def atribuir_fatura_cartao
-  return if data.blank?
+    return if data.blank?
 
-  cartao = fatura&.cartao
-  return unless cartao
+    cartao = fatura&.cartao
+    return unless cartao
 
-  fechamento = cartao.fechamento
-  data_lancamento = data.to_date
+    fechamento = cartao.fechamento
+    data_lancamento = data.to_date
 
-  data_fatura =
-    if data_lancamento.day > fechamento
-      data_lancamento.next_month.beginning_of_month
-    else
-      data_lancamento.beginning_of_month
-    end
+    data_fatura =
+      if data_lancamento.day > fechamento
+        data_lancamento.next_month.beginning_of_month
+      else
+        data_lancamento.beginning_of_month
+      end
 
-  self.fatura = cartao.faturas.find_or_create_by!(
-    mes: data_fatura.month,
-    ano: data_fatura.year
-    )
+    self.fatura = cartao.faturas.find_or_create_by!(
+      mes: data_fatura.month,
+      ano: data_fatura.year
+      )
   end
 end

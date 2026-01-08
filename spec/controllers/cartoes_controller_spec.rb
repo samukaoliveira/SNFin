@@ -32,7 +32,8 @@ RSpec.describe CartaosController, type: :controller do
     context "com parâmetros válidos" do
       it "cria um novo cartão" do
         expect {
-          post :create, params: { cartao: { nome: "Visa", limite: 1000 } }
+          post :create, params: { cartao: { nome: "Visa", limite: 1000,
+                                            fechamento: 25, vencimento: 8 } }
         }.to change(Cartao, :count).by(1)
         expect(response).to redirect_to(cartaos_path)
       end

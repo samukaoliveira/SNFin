@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_03_181106) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_08_005817) do
   create_table "cartaos", force: :cascade do |t|
     t.string "nome"
     t.decimal "limite"
@@ -47,6 +47,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_03_181106) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "descricao"
+    t.boolean "pago"
     t.index ["competencia_id"], name: "index_lancamentos_on_competencia_id"
     t.index ["fatura_id"], name: "index_lancamentos_on_fatura_id"
   end

@@ -27,22 +27,30 @@ class Competencia < ApplicationRecord
         ano: data.year,
         mes: data.month
         )
-    end  
+    end
 
     def nome
       "#{mes.to_s.rjust(2, '0')}/#{ano}"
     end
 
-    def total_receitas
+    def total_receitas_previstas
         filtra_e_soma(lancamentos, :receita)
     end
 
-    def total_despesas
+    def total_receitas_realizadas
+        filtra_e_soma(filtra_pagos(lancamentos), :receita)
+    end
+
+    def total_despesas_previstas
         filtra_e_soma(lancamentos, :despesa)
     end
 
+    def total_despesas_realizadas
+        filtra_e_soma(filtra_pagos(lancamentos), :despesa)
+    end
+
     def saldo
-        total_receitas - total_despesas
+        total_receitas_previstas - total_despesas_previstas
     end
 
     def filtra_e_soma(valores, natureza)
@@ -54,11 +62,15 @@ class Competencia < ApplicationRecord
     end
 
     def todas_as_receitas_cadastradas
-        filtra_e_soma(lancamentos_ate_competencia, :receita)
+        filtra_e_soma(filtra_pagos(lancamentos_ate_competencia), :receita)
     end
 
     def todas_as_despesas_cadastradas
-        filtra_e_soma(lancamentos_ate_competencia, :despesa)
+        filtra_e_soma(filtra_pagos(lancamentos_ate_competencia), :despesa)
+    end
+
+    def filtra_pagos(lancamentos)
+      lancamentos.filter { |v| v.pago? }
     end
 
     def data_fim
@@ -66,7 +78,7 @@ class Competencia < ApplicationRecord
     end
 
     def lancamentos_ate_competencia
-        Lancamento.where('data <= ?', data_fim)
+        Lancamento.where("data <= ?", data_fim)
     end
 
     def faturas

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resources :competencias
   resources :lancamentos do
+    patch :toggle_pago, on: :member
     collection do
       get :importar
       post :importar_xls
