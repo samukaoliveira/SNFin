@@ -36,4 +36,32 @@ pt-BR:
         - Outubro
         - Novembro
         - Dezembro
+  devise:
+    sessions:
+      signed_in: "Login realizado com sucesso."
+      signed_out: "Logout realizado com sucesso."
+
+    registrations:
+      signed_up: "Cadastro realizado com sucesso."
+      updated: "Cadastro atualizado com sucesso."
+      destroyed: "Conta removida com sucesso."
+
+    passwords:
+      send_instructions: "Você receberá um email com instruções para redefinir sua senha."
+      updated: "Sua senha foi alterada com sucesso."
+
+    confirmations:
+      send_instructions: "Você receberá um email com instruções para confirmar sua conta."
+      confirmed: "Sua conta foi confirmada com sucesso."
+
+    failure:
+      unauthenticated: "Você precisa estar logado para acessar esta página."
+      invalid: "Email ou senha inválidos."
+      not_found_in_database: "Email ou senha inválidos."
+      already_authenticated: "Você já está autenticado."
+
+      user:
+        unauthenticated: "Você precisa estar logado para acessar esta página."
+        invalid: "Email ou senha inválidos."
+        not_found_in_database: "Email ou senha inválidos."
     

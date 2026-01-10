@@ -1,4 +1,40 @@
 <header class="mb-6 flex justify-between items-center">
+
+  <!-- Início do Alert e Notice -->
+  <div class="fixed top-4 right-4 z-50 space-y-2">
+    <% if notice %>
+      <div
+        data-flash
+        class="flash-message transition-all duration-500 ease-in-out flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg bg-green-100 text-green-800 border border-green-300"
+      >
+        <span><%= notice %></span>
+        <button
+          onclick="this.parentElement.remove()"
+          class="ml-2 text-lg font-bold opacity-50 hover:opacity-100"
+        >
+          ×
+        </button>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div
+        data-flash
+        class="flash-message transition-all duration-500 ease-in-out flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg bg-red-100 text-red-800 border border-red-300"
+      >
+        <span><%= alert %></span>
+        <button
+          onclick="this.parentElement.remove()"
+          class="ml-2 text-lg font-bold opacity-50 hover:opacity-100"
+        >
+          ×
+        </button>
+      </div>
+    <% end %>
+  </div>
+  <!-- Fim do Alert e Notice -->
+
+
   <h1 class="text-2xl font-semibold">
     <%= content_for?(:title) ? yield(:title) : "Dashboard" %>
   </h1>
@@ -25,4 +61,7 @@
         new_lancamento_path,
         class: "ml-4 bg-blue-600 text-white px-4 py-2 rounded" %>
   </div>
+
+  <%= link_to "Sair", destroy_user_session_path, data: { turbo_method: :delete } %>
+
 </header>

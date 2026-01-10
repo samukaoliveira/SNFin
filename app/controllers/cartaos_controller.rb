@@ -1,5 +1,7 @@
 class CartaosController < ApplicationController
-  before_action :set_cartao, only: [:show, :edit, :update, :destroy, :faturas]
+  before_action :authenticate_user!
+
+  before_action :set_cartao, only: [ :show, :edit, :update, :destroy, :faturas ]
 
   def index
     @cartaos = Cartao.all

@@ -15,3 +15,18 @@ document.addEventListener("change", function (e) {
   });
 });
 
+document.addEventListener("turbo:load", () => {
+  document.querySelectorAll("[data-flash]").forEach((flash) => {
+    setTimeout(() => {
+      flash.classList.add(
+        "opacity-0",
+        "translate-x-4"
+      )
+
+      setTimeout(() => {
+        flash.remove()
+      }, 500)
+    }, 5000)
+  })
+})
+
