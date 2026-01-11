@@ -26,7 +26,8 @@ Rails.application.configure do
   end
 
   config.hosts << "snfin.samukaoliveira.com.br"
-
+  config.hosts << "134.255.176.164"
+  config.hosts << "localhost"
   # Change to :null_store to avoid any caching.
   config.cache_store = :memory_store
 
