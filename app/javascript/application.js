@@ -1,6 +1,7 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
 import "controllers"
+import "modal"
 
 document.addEventListener("change", function (e) {
   if (!e.target.classList.contains("js-pago")) return;
@@ -29,4 +30,7 @@ document.addEventListener("turbo:load", () => {
     }, 5000)
   })
 })
+
+
+
 

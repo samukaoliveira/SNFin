@@ -1,0 +1,59 @@
+<div id="modalLancamento" class="modal">
+  <div class="modal-content">
+
+    <header class="modal-header">
+      <h2>Novo lançamento</h2>
+      <button type="button" class="close-btn" onclick="closeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </header>
+
+    <form method="post" action="<%= new_lancamento_path %>">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <% if @fatura %>
+        <input type="hidden" name="fatura" value="<%= @fatura.id %>">
+      <% end %>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <input type="text" name="descricao" required>
+      </div>
+
+      <div class="form-group">
+        <label>Valor</label>
+        <input type="number" step="0.01" name="valor" required>
+      </div>
+
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" name="data" required>
+      </div>
+
+      <div class="form-group">
+        <label>Natureza</label>
+        <select name="natureza">
+          <option value="RECEITA">Receita</option>
+          <option value="DESPESA">Despesa</option>
+        </select>
+      </div>
+
+      <div class="form-group checkbox">
+        <label>
+          <input type="checkbox" name="pago">
+          Já pago
+        </label>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary">
+          Salvar
+        </button>
+      </footer>
+    </form>
+
+  </div>
+</div>

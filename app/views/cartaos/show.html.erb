@@ -2,7 +2,7 @@
 
 <p class="mb-4">
   <strong>Limite:</strong>
-  R$ <%= number_to_currency(@cartao.limite, unit: "") %>
+  R$ 
 </p>
 <p class="mb-4">
   <strong>Fechamento:</strong>
@@ -16,4 +16,71 @@
 <div class="flex gap-2">
   <%= link_to "Editar", edit_cartao_path(@cartao), class: "px-4 py-2 border rounded" %>
   <%= link_to "Voltar", cartaos_path, class: "px-4 py-2 border rounded" %>
+</div>
+
+
+<!-- AÇÕES -->
+ <div class="acoes">
+    <button class="add-lancamento-btn" onclick="openModal()">
+        <i class="fa-solid fa-circle-plus"></i> Novo Lançamento
+    </button>
+</div>
+
+<!-- ===== RESUMO ===== -->
+<div class="cards">
+
+    <div class="card saldo">
+        <h3><i class="fa-solid fa-sack-dollar"></i> Fatura Atual</h3>
+        <p class="despesa">R$ {{ total_fatura }}</p>
+    </div>
+
+    <div class="card">
+        <h3><i class="fa-solid fa-arrow-trend-up"></i> Limite Disponível</h3>
+        <p class="receita">R$ <%= number_to_currency(@cartao.limite, unit: "") %></p>
+    </div>
+
+    <div class="card">
+        <h3><i class="fa-solid fa-arrow-trend-up"></i> Compras parceladas</h3>
+        <p class="receita">R$ <%= number_to_currency(@cartao.limite, unit: "") %></p>
+    </div>
+</div>
+
+<!-- ===== TABELA ===== -->
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Lançamento</th>
+                <th>Valor</th>
+                <th>Natureza</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for l in lancamentos %}
+            <tr>
+                <td>{{ l.data|date:"d/m/Y" }}</td>
+                <td>{{ l.descricao }}</td>
+                <td class="valor"> {% if l.natureza == "DESPESA" %}
+                                        <span class="despesa">R$ -{{ l.valor }}</span>
+                                    {% else %}
+                                        <span class="receita"></span>R$ {{ l.valor }}</span>
+                                    {% endif %}</td>
+                <td>{{ l.natureza }}</td>
+                <td>
+                    {% if l.pago %}
+                        <span class="pago">
+                            <i class="fa-solid fa-check"></i> Pago
+                        </span>
+                    {% else %}
+                        <span class="nao-pago">
+                            <i class="fa-solid fa-clock"></i> Pendente
+                        </span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>

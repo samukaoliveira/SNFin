@@ -4,7 +4,9 @@
     <title>SNFin</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%# stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -14,11 +16,10 @@
 
     <div class="flex min-h-screen">
 
-      <%= render "shared/sidebar" %>
-
       <main class="flex-1 p-6">
         <%= render "shared/header" %>
         <%= yield %>
+        <%= render "shared/lancamentos" if user_signed_in? %>
       </main>
 
     </div>

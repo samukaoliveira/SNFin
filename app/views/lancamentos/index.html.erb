@@ -1,14 +1,56 @@
 <% content_for :title, "Lançamentos" %>
 
-<div class="bg-white rounded shadow overflow-hidden">
-  <table class="w-full text-sm">
-    <thead class="border-b bg-gray-50">
+<div class="panel">
+
+  <!-- ===== RESUMO ===== -->
+  <div class="cards">
+
+      <div class="card saldo">
+          <h3><i class="fa-solid fa-sack-dollar"></i> Saldo em Caixa</h3>
+          <% if @competencia_atual.saldo < 0 %>
+              <p class="despesa">R$ <%= @competencia_atual.saldo %></p>
+          <% else %>
+              <p class="receita">R$ <%= @competencia_atual.saldo %></p>
+          <% end %>
+      </div>
+
+      <div class="card">
+          <h3><i class="fa-solid fa-arrow-trend-up"></i> Receitas previstas</h3>
+          <p class="receita">R$ <%= @competencia_atual.total_receitas_previstas %></p>
+      </div>
+
+      <div class="card">
+          <h3><i class="fa-solid fa-arrow-trend-down"></i> Despesas previstas</h3>
+          <p class="despesa">R$ <%= @competencia_atual.total_despesas_previstas %> </p>
+      </div>
+
+      <div class="card">
+          <h3><i class="fa-solid fa-circle-check"></i> Receitas realizadas</h3>
+          <p class="receita">R$ <%= @competencia_atual.todas_as_receitas_cadastradas %></p>
+      </div>
+
+      <div class="card">
+          <h3><i class="fa-solid fa-circle-xmark"></i> Despesas realizadas</h3>
+          <p class="despesa">R$ <%= @competencia_atual.todas_as_despesas_cadastradas %></p>
+      </div>
+  </div>
+
+  <!-- AÇÕES -->
+  <div class="acoes">
+      <button class="add-lancamento-btn" onclick="openModal()">
+          <i class="fa-solid fa-circle-plus"></i> Novo Lançamento
+      </button>
+  </div>
+
+
+  <table class="table table-striped table-hover">
+    <thead>
       <tr>
-        <th class="p-3 text-left w-20">Data</th>
-        <th class="p-3 text-left">Descrição</th>
-        <th class="p-3 text-left">Natureza</th>
-        <th class="p-3 text-right w-32">Valor</th>
-        <th class="p-3 text-right w-10">Pago</th>
+        <th class="col-date">Data</th>
+        <th>Descrição</th>
+        <th class="col-natureza">Natureza</th>
+        <th class="col-value text-right">Valor</th>
+        <th class="col-paid text-center">Pago</th>
       </tr>
     </thead>
 
@@ -16,69 +58,63 @@
 
       <!-- ================= CARTÕES / FATURAS ================= -->
       <% @faturas.each do |fatura| %>
+        <tr class="row-fatura">
+          <td class="col-date">
+            <%= "%02d/%02d" % [fatura.mes, fatura.ano % 100] %>
+          </td>
 
-        
-          <div>
-            <tr class="border-b bg-gray-50 hover:bg-gray-100 cursor-pointer">
-              <td class="p-3">
-                <%= "%02d/%02d" % [fatura.mes, fatura.ano % 100] %>
-              </td>
+          <td class="strong">
+            💳 <%= fatura.cartao.nome %>
+          </td>
 
-              <td class="p-3 font-medium">
-                💳 <%= fatura.cartao.nome %>
-              </td>
+          <td>
+            <%= link_to "Ver fatura",
+                cartao_fatura_path(fatura.cartao, fatura),
+                class: "btn btn-primary btn-sm" %>
+          </td>
 
-              <td class="p-3 text-gray-500">
-                <%= link_to cartao_fatura_path(fatura.cartao, fatura),
-                  class: "inline-flex items-center px-3 py-1.5
-                          rounded-md bg-blue-600 text-white text-xs font-medium
-                          hover:bg-blue-700 transition" do %>
-                  Ver fatura
-                <% end %>
+          <td class="text-right text-danger strong">
+            <%= number_to_currency(fatura.lancamentos.sum(:valor)) %>
+          </td>
 
-              </td>
-
-              <td class="p-3 text-right font-semibold text-red-600">
-                <%= number_to_currency(fatura.lancamentos.sum(:valor)) %>
-              </td>
-            </tr>
-          </div>
+          <td></td>
+        </tr>
       <% end %>
 
       <!-- ================= LANÇAMENTOS NORMAIS ================= -->
       <% @lancamentos.each do |l| %>
-        <tr class="border-b hover:bg-gray-50">
-          <td class="p-3">
+        <tr>
+          <td class="col-date">
             <%= l.data.strftime("%d/%m") %>
           </td>
 
-          <td class="p-3">
+          <td>
             <%= l.descricao.capitalize %>
           </td>
 
-          <td class="p-3">
-            <%= l.natureza.capitalize %>
+          <td class="col-natureza">
+            <span class="badge badge-<%= l.despesa? ? 'danger' : 'success' %>">
+              <%= l.natureza.capitalize %>
+            </span>
           </td>
 
-          <td class="p-3 text-right font-medium
-            <%= l.despesa? ? 'text-red-600' : 'text-green-600' %>">
+          <td class="text-right <%= l.despesa? ? 'text-danger' : 'text-success' %>">
             <%= number_to_currency(l.valor) %>
           </td>
 
-          <td class="p-1 text-center">
+          <td class="text-center">
             <input type="checkbox"
-                  <%= "checked" if l.pago %>
-                  data-url="<%= toggle_pago_lancamento_path(l) %>"
-                  data-csrf="<%= form_authenticity_token %>"
-                  class="js-pago">
+                   <%= "checked" if l.pago %>
+                   data-url="<%= toggle_pago_lancamento_path(l) %>"
+                   data-csrf="<%= form_authenticity_token %>"
+                   class="js-pago">
           </td>
-
         </tr>
       <% end %>
 
       <% if @faturas.empty? && @lancamentos.empty? %>
         <tr>
-          <td colspan="4" class="p-6 text-center text-gray-400">
+          <td colspan="5" class="empty">
             Nenhum lançamento nesta competência
           </td>
         </tr>
@@ -87,3 +123,4 @@
     </tbody>
   </table>
 </div>
+
