@@ -6,6 +6,10 @@ permissions:
 
 on:
   workflow_dispatch:
+    inputs:
+        reason:
+          description: "Motivo do build"
+          required: false
 
 jobs:
   test-and-build:
