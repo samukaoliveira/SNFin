@@ -129,6 +129,8 @@ RSpec.describe Competencia, type: :model do
         valor: 999,
         natureza: :receita
       )
+    
+      comp.reload
 
       expect(comp.total_receitas_previstas).to eq(500)
       expect(comp.total_despesas_previstas).to eq(200)
@@ -152,6 +154,8 @@ RSpec.describe Competencia, type: :model do
         valor: 400,
         natureza: :despesa
       )
+      
+      comp.reload
 
       expect(comp.saldo).to eq(600)
     end
