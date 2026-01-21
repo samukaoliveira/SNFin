@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GITHUB_TOKEN = credentials('github-token')
+        GITHUB_TOKEN = credentials('github-actions-token')
         OWNER = 'samukaoliveira'
         REPO  = 'SNFin'
         WORKFLOW_FILE = 'ci.yml'
