@@ -4,10 +4,6 @@ require 'rails_helper'
 RSpec.describe Competencia, type: :model do
 
   let(:user) { create(:user) }
-
-  before do
-    sign_in user
-  end
   
   describe ".por_data" do
     it "retorna a competência correta para uma data" do
