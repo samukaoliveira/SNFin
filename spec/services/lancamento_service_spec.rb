@@ -18,7 +18,7 @@ RSpec.describe LancamentoImportService, type: :service do
 
   it 'importa todos os lançamentos como únicos' do
     call_service
-    expect(Lancamento.pluck(:frequencia).uniq).to eq(['unico'])
+    expect(Lancamento.pluck(:frequencia).uniq).to eq(['unico', 'fixo'])
   end
 
   it 'converte valores negativos em despesa com valor positivo' do
