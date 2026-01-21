@@ -3,6 +3,11 @@ require 'rails_helper'
 
 RSpec.describe CartaosController, type: :controller do
   let!(:cartao) { create(:cartao) }
+  let(:user) { create(:user) }
+
+  before do
+    sign_in user
+  end
 
   describe "GET #index" do
     it "retorna sucesso" do
