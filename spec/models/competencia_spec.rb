@@ -112,8 +112,8 @@ RSpec.describe Competencia, type: :model do
       create(:lancamento, data: '2026-01-10', valor: 200, natureza: :despesa)
       create(:lancamento, data: '2026-02-01', valor: 999, natureza: :receita)
 
-      expect(comp.total_receitas).to eq(500)
-      expect(comp.total_despesas).to eq(200)
+      expect(comp.total_receitas_previstas).to eq(500)
+      expect(comp.total_despesas_previstas).to eq(200)
     end
   end
 
