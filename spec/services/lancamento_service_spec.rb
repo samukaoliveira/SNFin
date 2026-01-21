@@ -8,6 +8,12 @@ RSpec.describe LancamentoImportService, type: :service do
     )
   end
 
+  let(:user) { create(:user) }
+
+  before do
+    sign_in user
+  end
+
   subject(:call_service) { described_class.new(file).call }
 
   it 'importa lançamentos do arquivo' do
