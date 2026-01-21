@@ -17,11 +17,17 @@ pipeline {
                     -H "Authorization: Bearer $GITHUB_TOKEN" \
                     -H "Accept: application/vnd.github+json" \
                     https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$WORKFLOW_FILE/dispatches \
-                    -d "{\"ref\":\"$BRANCH\",\"inputs\":{\"reason\":\"triggered by jenkins\"}}"
+                    -d '{
+                      "ref": "'$BRANCH'",
+                      "inputs": {
+                        "reason": "triggered by jenkins"
+                      }
+                    }'
                 '''
             }
         }
     }
+
 
     post {
         success {
