@@ -118,37 +118,55 @@ RSpec.describe Competencia, type: :model do
   end
 
   describe '#saldo' do
-  it 'retorna receitas menos despesas' do
-    comp = create(:competencia, ano: 2026, mes: 1)
-
-    create(:lancamento,
-      competencia: comp,
-      data: Date.new(2026, 1, 5),
-      valor: 1000,
-      natureza: :receita
-    )
-
-    create(:lancamento,
-      competencia: comp,
-      data: Date.new(2026, 1, 6),
-      valor: 400,
-      natureza: :despesa
-    )
-
-    expect(comp.saldo).to eq(600)
+    it 'retorna receitas menos despesas' do
+      comp = create(:competencia, ano: 2026, mes: 1)
+  
+      create(:lancamento,
+        competencia: comp,
+        data: Date.new(2026, 1, 5),
+        valor: 1000,
+        natureza: :receita
+      )
+  
+      create(:lancamento,
+        competencia: comp,
+        data: Date.new(2026, 1, 6),
+        valor: 400,
+        natureza: :despesa
+      )
+  
+      expect(comp.saldo).to eq(600)
+    end
   end
-end
 
 
   describe '#saldo_total' do
     it 'ignora lançamentos futuros no saldo total' do
       comp = create(:competencia, ano: 2026, mes: 1)
-
-      create(:lancamento, data: '2026-01-01', valor: 300, natureza: :receita)
-      create(:lancamento, data: '2026-01-20', valor: 100, natureza: :despesa)
-      create(:lancamento, data: '2026-02-01', valor: 999, natureza: :receita)
-
+  
+      create(:lancamento,
+        competencia: comp,
+        data: Date.new(2026, 1, 1),
+        valor: 300,
+        natureza: :receita
+      )
+  
+      create(:lancamento,
+        competencia: comp,
+        data: Date.new(2026, 1, 20),
+        valor: 100,
+        natureza: :despesa
+      )
+  
+      create(:lancamento,
+        competencia: comp,
+        data: Date.new(2026, 2, 1),
+        valor: 999,
+        natureza: :receita
+      )
+  
       expect(comp.saldo_total).to eq(200)
     end
   end
+
 end
