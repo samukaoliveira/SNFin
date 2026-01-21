@@ -107,11 +107,28 @@ RSpec.describe Competencia, type: :model do
   describe 'totais da competência' do
     it 'soma corretamente receitas e despesas' do
       comp = create(:competencia, ano: 2026, mes: 1)
-
-      create(:lancamento, data: '2026-01-05', valor: 500, natureza: :receita)
-      create(:lancamento, data: '2026-01-10', valor: 200, natureza: :despesa)
-      create(:lancamento, data: '2026-02-01', valor: 999, natureza: :receita)
-
+  
+      create(:lancamento,
+        competencia: comp,
+        data: Date.new(2026, 1, 5),
+        valor: 500,
+        natureza: :receita
+      )
+  
+      create(:lancamento,
+        competencia: comp,
+        data: Date.new(2026, 1, 10),
+        valor: 200,
+        natureza: :despesa
+      )
+  
+      create(:lancamento,
+        competencia: comp,
+        data: Date.new(2026, 2, 1),
+        valor: 999,
+        natureza: :receita
+      )
+  
       expect(comp.total_receitas_previstas).to eq(500)
       expect(comp.total_despesas_previstas).to eq(200)
     end
