@@ -2,6 +2,13 @@
 require 'rails_helper'
 
 RSpec.describe Lancamento, type: :model do
+
+    let(:user) { create(:user) }
+
+      before do
+        sign_in user
+      end
+    
     it "não permite valor negativo" do
         lanc = Lancamento.new(valor: -10, data: Date.today, frequencia: "unico", natureza: "receita")
         expect(lanc).not_to be_valid
