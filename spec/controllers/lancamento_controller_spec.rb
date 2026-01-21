@@ -2,6 +2,11 @@ require 'rails_helper'
 
 RSpec.describe LancamentosController, type: :controller do
   let(:competencia) { create(:competencia, ano: 2025, mes: 4) }
+  let(:user) { create(:user) }
+
+  before do
+    sign_in user
+  end
   
   describe "GET #index" do
     it "retorna sucesso" do
